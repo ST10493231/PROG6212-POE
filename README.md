@@ -32,16 +32,13 @@ categories per event, and sample enrolments/results).
 
 ## CI/CD
 
-A GitHub Actions workflow (`.github/workflows/part1-validate.yml`) runs on every push and validates that:
+A GitHub Actions workflow (`.github/workflows/Part1CI.yml`) runs on every push and validates that:
 - the `/docs` folder exists,
 - it contains the ERD file, the endpoint plan, and the SQL script,
 - `README.md` exists at the repository root.
+<img width="1322" height="282" alt="image" src="https://github.com/user-attachments/assets/f3ad6d75-9c46-42ac-980b-25e9e7557a15" />
 
-**Build status:** ![CI status placeholder — replace with your Actions badge]
 
-**Screenshot of Action:**
-
-`[Insert screenshot here after your first successful workflow run]`
 
 ## Video walkthrough
 
