@@ -2,7 +2,7 @@
 
 ## Roles
 Roles & Capabilities
-Organiser: Creates, edits, and deletes events; manages event categories; captures participant results; views all enrolments for their events.
+Organiser: Creates, edits and deletes events; manages event categories; captures participant results; views all enrolments for their events.
 Participant: Registers an account; browses events; enrols in an event by selecting a category; views their own enrolments and personal race results.
 
 ## Contents of this repository (Part 1)
@@ -33,8 +33,9 @@ A GitHub Actions workflow (`.github/workflows/Part 1 CI.yml`) runs on every push
 <img width="1322" height="282" alt="image" src="https://github.com/user-attachments/assets/f3ad6d75-9c46-42ac-980b-25e9e7557a15" />
 
 
+
 ## Video walkthrough
-**YouTube (unlisted):** `[Insert link here]`
+**YouTube (unlisted):** `(https://youtu.be/sLPNnJ_g7q4?si=_8_nj2le3DNoH5yX)`
 The video walks through the planning documents, explains the ERD design decisions, the endpoint plan and runs the SQL script live in SSMS.
 
 ## Commit history
