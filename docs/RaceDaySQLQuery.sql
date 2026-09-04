@@ -100,3 +100,11 @@ VALUES
     ('Anika van Wyk',    'anika.vanwyk@example.com',      'hashed_pw_4', 2, NULL), -- Participant
     ('Naledi Molefe',    'naledi.molefe@example.com',     'hashed_pw_5', 2, NULL); -- Participant
 
+-- Events: 3 events
+INSERT INTO dbo.Events (Name, Description, EventDate, Location, DistanceKm, EventType, BannerImageURL, OrganiserID)
+VALUES
+    ('Johannesburg City Run',   'Annual road running event through the Johannesburg CBD.',        '2026-11-14 07:00:00', 'Johannesburg, Gauteng',   10.0,  'Run',   NULL, 1),
+    ('Cape Town Cycle Tour',    'Scenic cycling event around the Cape Peninsula.',                  '2026-03-08 06:30:00', 'Cape Town, Western Cape', 109.0, 'Cycle', NULL, 2),
+    ('Durban Beachfront Walk',  'Family-friendly charity walk along the Durban beachfront.',        '2026-09-20 08:00:00', 'Durban, KwaZulu-Natal',   3.0,   'Walk',  NULL, 1);
+
+
