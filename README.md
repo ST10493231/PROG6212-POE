@@ -1,13 +1,11 @@
-# RaceDay — Part 1: System Planning and Database
+# RaceDay Part 1: System Planning and Database
 
 ## Roles
-
 Roles & Capabilities
 Organiser: Creates, edits, and deletes events; manages event categories; captures participant results; views all enrolments for their events.
 Participant: Registers an account; browses events; enrols in an event by selecting a category; views their own enrolments and personal race results.
 
-## What's in this repository (Part 1)
-
+## Contents of this repository (Part 1)
 All planning documents are in the [`/docs`](./docs) folder:
 File & Description
 `RaceDay ERD.png`: Entity Relationship Diagram — 6 entities (Roles, Users, Events, Categories, Enrolments, Results), with primary keys, foreign keys, and relationship cardinality.
@@ -33,7 +31,6 @@ A GitHub Actions workflow (`.github/workflows/Part 1 CI.yml`) runs on every push
 - it contains the ERD file, the endpoint plan and the SQL script,
 - `README.md` exists at the repository root.
 <img width="1322" height="282" alt="image" src="https://github.com/user-attachments/assets/f3ad6d75-9c46-42ac-980b-25e9e7557a15" />
-
 
 
 ## Video walkthrough
