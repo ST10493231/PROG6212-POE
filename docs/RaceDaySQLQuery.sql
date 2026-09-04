@@ -131,3 +131,4 @@ VALUES
     (1, '00:24:12', 5,  'Finished'),
     (2, '00:52:47', 12, 'Finished');
 
+PRINT 'RaceDay database schema created and seeded successfully.';
