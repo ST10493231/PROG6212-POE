@@ -124,3 +124,10 @@ VALUES
     (4, 2, 'Confirmed'), -- Anika -> 10km Road Race (Joburg)
     (5, 3, 'Confirmed'), -- Naledi -> 109km Cycle (Cape Town)
     (3, 5, 'Confirmed'); -- Sipho -> 3km Walk (Durban)
+
+-- Results: results for two of the enrolments
+INSERT INTO dbo.Results (EnrolmentID, FinishTime, Position, Status)
+VALUES
+    (1, '00:24:12', 5,  'Finished'),
+    (2, '00:52:47', 12, 'Finished');
+
