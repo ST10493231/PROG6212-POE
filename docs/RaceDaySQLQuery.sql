@@ -1,23 +1,28 @@
 -- RaceDay Database Schema
 -- System Planning and Database - Part 1
+-- Target: Microsoft SQL Server (SSMS)
 
-CREATE DATABASE RaceDayDB;
+IF DB_ID('RaceDayDB') IS NULL
+BEGIN
+    CREATE DATABASE RaceDayDB;
+END
 
 USE RaceDayDB;
 
 -- Table: Roles
 -- Lookup table for the two system roles
 
-CREATE TABLE dbo.Roles (
+CREATE TABLE Roles (
     RoleID      INT IDENTITY(1,1) PRIMARY KEY,
     RoleName    VARCHAR(20) NOT NULL UNIQUE
 );
+
 
 -- Table: Users
 -- Both Organisers and Participants live here, differentiated
 -- by RoleID
 
-CREATE TABLE dbo.Users (
+CREATE TABLE Users (
     UserID          INT IDENTITY(1,1) PRIMARY KEY,
     FullName        VARCHAR(100) NOT NULL,
     Email           VARCHAR(150) NOT NULL UNIQUE,
@@ -25,13 +30,14 @@ CREATE TABLE dbo.Users (
     RoleID          INT NOT NULL,
     ProfilePictureURL VARCHAR(500) NULL,
     CreatedAt       DATETIME NOT NULL DEFAULT GETDATE(),
-    CONSTRAINT FK_Users_Roles FOREIGN KEY (RoleID) REFERENCES dbo.Roles(RoleID)
+    CONSTRAINT FK_Users_Roles FOREIGN KEY (RoleID) REFERENCES Roles(RoleID)
 );
+
 
 -- Table: Events
 -- Created and owned by an Organiser (Users)
 
-CREATE TABLE dbo.Events (
+CREATE TABLE Events (
     EventID         INT IDENTITY(1,1) PRIMARY KEY,
     Name            VARCHAR(150) NOT NULL,
     Description     VARCHAR(500) NULL,
@@ -42,21 +48,21 @@ CREATE TABLE dbo.Events (
     BannerImageURL  VARCHAR(500) NULL,
     OrganiserID     INT NOT NULL,
     CreatedAt       DATETIME NOT NULL DEFAULT GETDATE(),
-    CONSTRAINT FK_Events_Users FOREIGN KEY (OrganiserID) REFERENCES dbo.Users(UserID),
+    CONSTRAINT FK_Events_Users FOREIGN KEY (OrganiserID) REFERENCES Users(UserID),
     CONSTRAINT CK_Events_EventType CHECK (EventType IN ('Run', 'Walk', 'Cycle'))
 );
 
 -- Table: Categories
 -- Distance/race categories that belong to an Event
--- e.g. 5km, 10km, 21km
+-- 5km, 10km, 21km
 
-CREATE TABLE dbo.Categories (
+CREATE TABLE Categories (
     CategoryID      INT IDENTITY(1,1) PRIMARY KEY,
     EventID         INT NOT NULL,
     Name            VARCHAR(100) NOT NULL,
-    DistanceKm      DECIMAL(5,2) NULL, -- NULL for age-based categories (e.g. 'Under 20', 'Senior')
+    DistanceKm      DECIMAL(5,2) NULL, -- NULL for age-based categories ('Under 20', 'Senior')
     MaxParticipants INT NOT NULL DEFAULT 100,
-    CONSTRAINT FK_Categories_Events FOREIGN KEY (EventID) REFERENCES dbo.Events(EventID)
+    CONSTRAINT FK_Categories_Events FOREIGN KEY (EventID) REFERENCES Events(EventID)
 );
 
 -- Table: Enrolments
@@ -64,35 +70,36 @@ CREATE TABLE dbo.Categories (
 -- Category. Implements the many-to-many relationship between
 -- Users and Categories.
 
-CREATE TABLE dbo.Enrolments (
+CREATE TABLE Enrolments (
     EnrolmentID     INT IDENTITY(1,1) PRIMARY KEY,
     UserID          INT NOT NULL,
     CategoryID      INT NOT NULL,
     EnrolmentDate   DATETIME NOT NULL DEFAULT GETDATE(),
     Status          VARCHAR(20) NOT NULL DEFAULT 'Confirmed',
     CONSTRAINT FK_Enrolments_Users FOREIGN KEY (UserID) REFERENCES dbo.Users(UserID),
-    CONSTRAINT FK_Enrolments_Categories FOREIGN KEY (CategoryID) REFERENCES dbo.Categories(CategoryID),
+    CONSTRAINT FK_Enrolments_Categories FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID),
     CONSTRAINT UQ_Enrolments_User_Category UNIQUE (UserID, CategoryID)
 );
+
 
 -- Table: Results
 -- One result per Enrolment (1-to-1), captured by the Organiser
 -- after the race
 
-CREATE TABLE dbo.Results (
+CREATE TABLE Results (
     ResultID        INT IDENTITY(1,1) PRIMARY KEY,
     EnrolmentID     INT NOT NULL UNIQUE,
     FinishTime      TIME NULL,
     Position        INT NULL,
     Status          VARCHAR(20) NOT NULL DEFAULT 'Finished',
-    CONSTRAINT FK_Results_Enrolments FOREIGN KEY (EnrolmentID) REFERENCES dbo.Enrolments(EnrolmentID)
+    CONSTRAINT FK_Results_Enrolments FOREIGN KEY (EnrolmentID) REFERENCES Enrolments(EnrolmentID)
 );
 
 -- Roles
-INSERT INTO dbo.Roles (RoleName) VALUES ('Organiser'), ('Participant');
+INSERT INTO Roles (RoleName) VALUES ('Organiser'), ('Participant');
 
 -- Users: 2 Organisers, 3 Participants (extra participant so enrolment counts work cleanly)
-INSERT INTO dbo.Users (FullName, Email, PasswordHash, RoleID, ProfilePictureURL)
+INSERT INTO Users (FullName, Email, PasswordHash, RoleID, ProfilePictureURL)
 VALUES
     ('Thabo Nkosi',     'thabo.nkosi@raceday.co.za',     'hashed_pw_1', 1, NULL), -- Organiser
     ('Lindiwe Dube',     'lindiwe.dube@raceday.co.za',    'hashed_pw_2', 1, NULL), -- Organiser
@@ -101,14 +108,14 @@ VALUES
     ('Naledi Molefe',    'naledi.molefe@example.com',     'hashed_pw_5', 2, NULL); -- Participant
 
 -- Events: 3 events
-INSERT INTO dbo.Events (Name, Description, EventDate, Location, DistanceKm, EventType, BannerImageURL, OrganiserID)
+INSERT INTO Events (Name, Description, EventDate, Location, DistanceKm, EventType, BannerImageURL, OrganiserID)
 VALUES
     ('Johannesburg City Run',   'Annual road running event through the Johannesburg CBD.',        '2026-11-14 07:00:00', 'Johannesburg, Gauteng',   10.0,  'Run',   NULL, 1),
     ('Cape Town Cycle Tour',    'Scenic cycling event around the Cape Peninsula.',                  '2026-03-08 06:30:00', 'Cape Town, Western Cape', 109.0, 'Cycle', NULL, 2),
     ('Durban Beachfront Walk',  'Family-friendly charity walk along the Durban beachfront.',        '2026-09-20 08:00:00', 'Durban, KwaZulu-Natal',   3.0,   'Walk',  NULL, 1);
 
 -- Categories: at least one per event (mix of distance-based and age-based)
-INSERT INTO dbo.Categories (EventID, Name, DistanceKm, MaxParticipants)
+INSERT INTO Categories (EventID, Name, DistanceKm, MaxParticipants)
 VALUES
     (1, '5km Fun Run',   5.0,  500),
     (1, '10km Road Race',10.0, 300),
@@ -118,7 +125,7 @@ VALUES
     (3, 'Under 20',      NULL, 150);
 
 -- Enrolments: participants enrolled in categories
-INSERT INTO dbo.Enrolments (UserID, CategoryID, Status)
+INSERT INTO Enrolments (UserID, CategoryID, Status)
 VALUES
     (3, 1, 'Confirmed'), -- Sipho -> 5km Fun Run (Joburg)
     (4, 2, 'Confirmed'), -- Anika -> 10km Road Race (Joburg)
@@ -126,7 +133,7 @@ VALUES
     (3, 5, 'Confirmed'); -- Sipho -> 3km Walk (Durban)
 
 -- Results: results for two of the enrolments
-INSERT INTO dbo.Results (EnrolmentID, FinishTime, Position, Status)
+INSERT INTO Results (EnrolmentID, FinishTime, Position, Status)
 VALUES
     (1, '00:24:12', 5,  'Finished'),
     (2, '00:52:47', 12, 'Finished');
