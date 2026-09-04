@@ -32,6 +32,7 @@ A GitHub Actions workflow (`.github/workflows/Part 1 CI.yml`) runs on every push
 - `README.md` exists at the repository root.
 <img width="1322" height="282" alt="image" src="https://github.com/user-attachments/assets/f3ad6d75-9c46-42ac-980b-25e9e7557a15" />
 
+<img width="630" height="119" alt="Screenshot 2026-09-04 230437" src="https://github.com/user-attachments/assets/883c0397-ca0c-4cff-8e7c-97b7e051300c" />
 
 
 ## Video walkthrough
