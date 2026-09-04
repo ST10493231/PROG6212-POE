@@ -1,6 +1,5 @@
 -- RaceDay Database Schema
 -- System Planning and Database - Part 1
--- Target: Microsoft SQL Server (SSMS)
 
 CREATE DATABASE RaceDayDB;
 
@@ -88,4 +87,16 @@ CREATE TABLE dbo.Results (
     Status          VARCHAR(20) NOT NULL DEFAULT 'Finished',
     CONSTRAINT FK_Results_Enrolments FOREIGN KEY (EnrolmentID) REFERENCES dbo.Enrolments(EnrolmentID)
 );
+
+-- Roles
+INSERT INTO dbo.Roles (RoleName) VALUES ('Organiser'), ('Participant');
+
+-- Users: 2 Organisers, 3 Participants (extra participant so enrolment counts work cleanly)
+INSERT INTO dbo.Users (FullName, Email, PasswordHash, RoleID, ProfilePictureURL)
+VALUES
+    ('Thabo Nkosi',     'thabo.nkosi@raceday.co.za',     'hashed_pw_1', 1, NULL), -- Organiser
+    ('Lindiwe Dube',     'lindiwe.dube@raceday.co.za',    'hashed_pw_2', 1, NULL), -- Organiser
+    ('Sipho Mokoena',    'sipho.mokoena@example.com',     'hashed_pw_3', 2, NULL), -- Participant
+    ('Anika van Wyk',    'anika.vanwyk@example.com',      'hashed_pw_4', 2, NULL), -- Participant
+    ('Naledi Molefe',    'naledi.molefe@example.com',     'hashed_pw_5', 2, NULL); -- Participant
 
