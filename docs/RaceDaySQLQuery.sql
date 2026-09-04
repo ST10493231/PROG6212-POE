@@ -116,3 +116,11 @@ VALUES
     (2, '55km Cycle',    55.0, 800),
     (3, '3km Walk',      3.0,  400),
     (3, 'Under 20',      NULL, 150);
+
+-- Enrolments: participants enrolled in categories
+INSERT INTO dbo.Enrolments (UserID, CategoryID, Status)
+VALUES
+    (3, 1, 'Confirmed'), -- Sipho -> 5km Fun Run (Joburg)
+    (4, 2, 'Confirmed'), -- Anika -> 10km Road Race (Joburg)
+    (5, 3, 'Confirmed'), -- Naledi -> 109km Cycle (Cape Town)
+    (3, 5, 'Confirmed'); -- Sipho -> 3km Walk (Durban)
