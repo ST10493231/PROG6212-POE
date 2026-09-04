@@ -139,3 +139,10 @@ VALUES
     (2, '00:52:47', 12, 'Finished');
 
 PRINT 'RaceDay database schema created and seeded successfully.';
+
+SELECT * FROM Roles;
+SELECT * FROM Users;
+SELECT * FROM Events;
+SELECT * FROM Categories;
+SELECT * FROM Enrolments;
+SELECT * FROM Results;
