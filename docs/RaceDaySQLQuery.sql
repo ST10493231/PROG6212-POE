@@ -107,4 +107,12 @@ VALUES
     ('Cape Town Cycle Tour',    'Scenic cycling event around the Cape Peninsula.',                  '2026-03-08 06:30:00', 'Cape Town, Western Cape', 109.0, 'Cycle', NULL, 2),
     ('Durban Beachfront Walk',  'Family-friendly charity walk along the Durban beachfront.',        '2026-09-20 08:00:00', 'Durban, KwaZulu-Natal',   3.0,   'Walk',  NULL, 1);
 
-
+-- Categories: at least one per event (mix of distance-based and age-based)
+INSERT INTO dbo.Categories (EventID, Name, DistanceKm, MaxParticipants)
+VALUES
+    (1, '5km Fun Run',   5.0,  500),
+    (1, '10km Road Race',10.0, 300),
+    (2, '109km Cycle',   109.0,1000),
+    (2, '55km Cycle',    55.0, 800),
+    (3, '3km Walk',      3.0,  400),
+    (3, 'Under 20',      NULL, 150);
