@@ -1,0 +1,71 @@
+name: Part 1 - Validate Planning Documents
+
+# Runs on every push/PR to main so you get a green check as evidence
+# that your /docs folder contains everything Part 1 requires.
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  validate-docs-folder:
+    name: Validate /docs folder structure
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check /docs folder exists
+        run: |
+          if [ ! -d "docs" ]; then
+            echo "::error::/docs folder is missing from the repository root."
+            exit 1
+          fi
+          echo "/docs folder found."
+
+      - name: Check for ERD image (PNG or PDF)
+        run: |
+          if ! find docs -maxdepth 1 -iname "*erd*.png" -o -iname "*erd*.pdf" | grep -q .; then
+            echo "::error::No ERD file found in /docs (expected a filename containing 'erd', .png or .pdf)."
+            exit 1
+          fi
+          echo "ERD file found:"
+          find docs -maxdepth 1 -iname "*erd*.png" -o -iname "*erd*.pdf"
+
+      - name: Check for API endpoint plan (PDF or Markdown)
+        run: |
+          if ! find docs -maxdepth 1 -iname "*endpoint*.md" -o -iname "*endpoint*.pdf" | grep -q .; then
+            echo "::error::No API endpoint plan found in /docs (expected a filename containing 'endpoint', .md or .pdf)."
+            exit 1
+          fi
+          echo "Endpoint plan found:"
+          find docs -maxdepth 1 -iname "*endpoint*.md" -o -iname "*endpoint*.pdf"
+
+      - name: Check for SQL script
+        run: |
+          if ! find docs -maxdepth 1 -iname "*.sql" | grep -q .; then
+            echo "::error::No .sql file found in /docs."
+            exit 1
+          fi
+          echo "SQL script found:"
+          find docs -maxdepth 1 -iname "*.sql"
+
+      - name: Check for README.md at repository root
+        run: |
+          if [ ! -f "README.md" ]; then
+            echo "::error::README.md is missing from the repository root."
+            exit 1
+          fi
+          echo "README.md found."
+
+      - name: Summary
+        run: |
+          echo "## Part 1 structure check passed" >> $GITHUB_STEP_SUMMARY
+          echo "- /docs folder exists" >> $GITHUB_STEP_SUMMARY
+          echo "- ERD file present" >> $GITHUB_STEP_SUMMARY
+          echo "- API endpoint plan present" >> $GITHUB_STEP_SUMMARY
+          echo "- SQL script present" >> $GITHUB_STEP_SUMMARY
+          echo "- README.md present" >> $GITHUB_STEP_SUMMARY
