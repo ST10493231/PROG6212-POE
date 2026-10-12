@@ -1,4 +1,4 @@
-# RaceDay Part 1: System Planning and Database
+# RaceDay Part 1 & 2: System Planning and Database
 
 ## Roles
 Roles & Capabilities
