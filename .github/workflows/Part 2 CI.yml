@@ -1,0 +1,44 @@
+name: Part 2 - Build and Test API
+
+on:
+  push:
+    branches: [ main, part2, 'part2/**' ]
+  pull_request:
+    branches: [ main, part2, 'part2/**' ]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: Build RaceDay and run unit tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore RaceDay/RaceDay.sln
+
+      - name: Build solution
+        run: dotnet build RaceDay/RaceDay.sln --no-restore --configuration Release
+
+      - name: Run unit tests
+        run: dotnet test RaceDay/RaceDay.sln --no-build --configuration Release --logger "trx;LogFileName=test-results.trx" --results-directory ./TestResults
+
+      - name: Publish test results summary
+        if: always()
+        run: |
+          echo "## Test run complete" >> $GITHUB_STEP_SUMMARY
+          echo "See the uploaded test-results artifact for full details." >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: ./TestResults
