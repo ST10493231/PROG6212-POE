@@ -5,14 +5,13 @@ using Microsoft.Extensions.Options;
 
 namespace RaceDay.Authentication;
 
-/// <summary>
 /// Reads the authenticated identity (UserId, Role, Email, FullName) straight out of
 /// server-side ASP.NET Core session state. The session is created on login by
-/// AuthController and persists on the server, keyed by a session-ID cookie the
-/// browser/client sends back on every subsequent request — this is the
+/// AuthenticationController and persists on the server, keyed by a session-ID cookie the
+/// browser/client sends back on every subsequent request, this is the
 /// "server-side session stores user ID and role" mechanism, as opposed to a
 /// stateless, client-held JWT.
-/// </summary>
+
 public class SessionAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {
     public const string SchemeName = "RaceDaySession";
@@ -34,7 +33,7 @@ public class SessionAuthenticationHandler : AuthenticationHandler<Authentication
 
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
-        // Session middleware must run before authentication middleware (see Program.cs)
+        // Session middleware must run before authentication middleware
         // so Context.Session is populated by the time this executes.
         var userId = Context.Session.GetInt32(SessionKeyUserId);
         var role = Context.Session.GetString(SessionKeyRole);
@@ -63,14 +62,14 @@ public class SessionAuthenticationHandler : AuthenticationHandler<Authentication
         return Task.FromResult(AuthenticateResult.Success(ticket));
     }
 
-    /// <summary>Called by [Authorize] when there is no valid session — returns 401.</summary>
+    /// Called by [Authorize] when there is no valid session — returns 401.
     protected override Task HandleChallengeAsync(AuthenticationProperties properties)
     {
         Response.StatusCode = StatusCodes.Status401Unauthorized;
         return Task.CompletedTask;
     }
 
-    /// <summary>Called by [Authorize(Roles = ...)] when the session's role doesn't match — returns 403.</summary>
+    /// Called by [Authorize(Roles = ...)] when the session's role doesn't match — returns 403.
     protected override Task HandleForbiddenAsync(AuthenticationProperties properties)
     {
         Response.StatusCode = StatusCodes.Status403Forbidden;
