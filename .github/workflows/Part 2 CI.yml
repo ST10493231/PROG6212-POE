@@ -1,44 +1,48 @@
-name: Part 2 - Build and Test API
+name: Part 2 CI
 
 on:
   push:
-    branches: [ main, part2, 'part2/**' ]
   pull_request:
-    branches: [ main, part2, 'part2/**' ]
-  workflow_dispatch:
 
 jobs:
   build-and-test:
-    name: Build RaceDay and run unit tests
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup .NET SDK
+      - name: Validate repository structure
+        run: |
+          set -e
+          missing=0
+          for p in README.md RaceDay.sln RaceDay/RaceDay.csproj RaceDay/Program.cs \
+                   RaceDay/Controllers RaceDay/Models RaceDay/DTOs RaceDay/Database \
+                   RaceDay.Tests/RaceDay.Tests.csproj; do
+            if [ -e "$p" ]; then echo "OK      $p"; else echo "MISSING $p"; missing=1; fi
+          done
+          exit $missing
+
+      - name: Setup .NET 8
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: 8.0.x
 
-      - name: Restore dependencies
-        run: dotnet restore RaceDay/RaceDay.sln
+      - name: Restore
+        run: dotnet restore RaceDay.sln
 
-      - name: Build solution
-        run: dotnet build RaceDay/RaceDay.sln --no-restore --configuration Release
+      - name: Build
+        run: dotnet build RaceDay.sln --configuration Release --no-restore
 
-      - name: Run unit tests
-        run: dotnet test RaceDay/RaceDay.sln --no-build --configuration Release --logger "trx;LogFileName=test-results.trx" --results-directory ./TestResults
-
-      - name: Publish test results summary
-        if: always()
-        run: |
-          echo "## Test run complete" >> $GITHUB_STEP_SUMMARY
-          echo "See the uploaded test-results artifact for full details." >> $GITHUB_STEP_SUMMARY
+      - name: Test
+        run: >
+          dotnet test RaceDay.sln --configuration Release --no-build
+          --logger "trx;LogFileName=test-results.trx"
+          --results-directory ./TestResults
 
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: ./TestResults
+          path: TestResults/*.trx
