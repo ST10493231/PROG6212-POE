@@ -16,7 +16,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Database (EF Core, Code-First against SQL Server)
 
-builder.Services.AddDbContext<RaceDayDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+if (!builder.Environment.IsEnvironment("Testing"))
+{
+    builder.Services.AddDbContext<RaceDayDbContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+}
 
 // ---------- Controllers ----------
 builder.Services.AddControllers();
