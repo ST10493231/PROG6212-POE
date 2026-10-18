@@ -40,7 +40,7 @@ A GitHub Actions workflow (`.github/workflows/Part 1 CI.yml`) runs on every push
 
 
 ## Part 1 video walkthrough
-**YouTube (unlisted):** `(https://youtu.be/sLPNnJ_g7q4?si=_8_nj2le3DNoH5yX)`
+**YouTube (unlisted):** [`(https://youtu.be/sLPNnJ_g7q4?si=_8_nj2le3DNoH5yX)`]
 The video walks through the planning documents, explains the ERD design decisions, the endpoint plan and runs the SQL script live in SSMS.
 
 ---
@@ -136,11 +136,9 @@ dotnet test RaceDay.sln
 ## Part 2 CI/CD
 The GitHub Actions workflow `.github/workflows/Part 2 CI.yml` runs on every push and pull request. It validates the repository structure, restores, builds in Release configuration and runs all unit tests, then uploads the results as an artifact.
 
-**Screenshot of a successful green build:** (GITHUB)
-
-![Part 2 green build](docs/ci-green-build.png)
+**Screenshot of a successful green build:** (<img width="629" height="164" alt="image" src="https://github.com/user-attachments/assets/c7dbb78f-5ea1-42e4-8892-adfac7cb3881" />)
 
 ## Part 2 video walkthrough
-**YouTube (unlisted):** [https://youtu.be/AcpJlanLyYE?si=BG9-Rns0u8ZWUDgA]
+**YouTube (unlisted):** [`https://youtu.be/AcpJlanLyYE?si=BG9-Rns0u8ZWUDgA`]
 
 The video demonstrates the running API, and explains the code structure, endpoints, authentication, Swagger and the unit tests.
