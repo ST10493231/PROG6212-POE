@@ -16,7 +16,7 @@ jobs:
         run: |
           set -e
           missing=0
-          for p in README.md RaceDay.sln RaceDay/RaceDay.csproj RaceDay/Program.cs \
+          for p in README.md RaceDay/RaceDay.sln RaceDay/RaceDay.csproj RaceDay/Program.cs \
                    RaceDay/Controllers RaceDay/Models RaceDay/DTOs RaceDay/Database \
                    RaceDay.Tests/RaceDay.Tests.csproj; do
             if [ -e "$p" ]; then echo "OK      $p"; else echo "MISSING $p"; missing=1; fi
@@ -29,14 +29,14 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Restore
-        run: dotnet restore RaceDay.sln
+        run: dotnet restore RaceDay/RaceDay.sln
 
       - name: Build
-        run: dotnet build RaceDay.sln --configuration Release --no-restore
+        run: dotnet build RaceDay/RaceDay.sln --configuration Release --no-restore
 
       - name: Test
         run: >
-          dotnet test RaceDay.sln --configuration Release --no-build
+          dotnet test RaceDay/RaceDay.sln --configuration Release --no-build
           --logger "trx;LogFileName=test-results.trx"
           --results-directory ./TestResults
 
