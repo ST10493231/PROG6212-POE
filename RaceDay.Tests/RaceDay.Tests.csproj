@@ -21,11 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Must be "..\RaceDay\RaceDay.csproj" -- this file lives in RaceDay.Tests/,
-         so it needs to step up one level (..) before going into the sibling
-         RaceDay/ folder. Without the "..\", it resolves to the non-existent
-         RaceDay.Tests\RaceDay\RaceDay.csproj and every type from the main
-         project becomes unresolvable. -->
     <ProjectReference Include="..\RaceDay\RaceDay.csproj" />
   </ItemGroup>
 
