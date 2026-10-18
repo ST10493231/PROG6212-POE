@@ -1,0 +1,28 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+## Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+
+## Uploaded files (keep folders, ignore contents)
+RaceDay/wwwroot/uploads/**/*
+!RaceDay/wwwroot/uploads/**/.gitkeep
+
+## Secrets -- never commit real values
+appsettings.Production.json
+*.secrets.json
+
+## Rider / VS Code
+.idea/
+.vscode/
+
+## OS
+.DS_Store
+Thumbs.db
